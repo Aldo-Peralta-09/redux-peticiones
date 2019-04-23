@@ -1,41 +1,29 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import GET_DATA_ACTION from './redux/actions/ActionType';
+import { 
+	BrowserRouter as Router, 
+	Route,
+	Switch
+} from "react-router-dom";
+import Header from './components/Header';
+import './css/header.css';
+import './css/footer.css';
+import Footer from './components/Footer';
+import GetData from './views/GetData';
 
 class App extends React.Component {
-  render(){
-    return(
-      <div>
-        {this._renderNames()}
-        <button onClick={this.props.getData}>Get Data</button>
-      </div>
+  render() {
+    return (
+      <Router>
+        <div>
+          <Header/>
+          <Switch>
+            <Route exact path="/" component={GetData}/>
+          </Switch>
+          <Footer/>
+        </div>
+      </Router>
     );
   }
-
-  _renderNames = () => {
-    return this.props.datosState.map((item) => {
-      if(item){
-        return <h1>{item.tags}</h1>
-      }
-      return null;
-    });
-  }
 }
 
-const mapStateToProps = ({datosState}) => {
-  return {
-    datosState: datosState
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getData: () => {
-      return dispatch(GET_DATA_ACTION());
-    }
-  };
-};
-
-const ConnectDemo = connect(mapStateToProps, mapDispatchToProps)(App);
-
-export default ConnectDemo;
+export default App;
