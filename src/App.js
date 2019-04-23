@@ -1,26 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+import GET_DATA_ACTION from './redux/actions/ActionType';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render(){
+    return(
+      <div>
+        {this._renderNames()}
+        <button onClick={this.props.getData}>Get Data</button>
+      </div>
+    );
+  }
+
+  _renderNames = () => {
+    return this.props.datosState.map((item) => {
+      if(item){
+        return <h1>{item.tags}</h1>
+      }
+      return null;
+    });
+  }
 }
 
-export default App;
+const mapStateToProps = ({datosState}) => {
+  return {
+    datosState: datosState
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getData: () => {
+      return dispatch(GET_DATA_ACTION());
+    }
+  };
+};
+
+const ConnectDemo = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default ConnectDemo;
